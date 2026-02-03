@@ -1,0 +1,543 @@
+@import "tailwindcss";
+
+/* ================================================
+   iOS 26 "LIQUID GLASS" DESIGN SYSTEM
+   ================================================ */
+
+:root {
+  /* Liquid Glass Colors - Light Mode */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-bg-light: rgba(255, 255, 255, 0.92);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.50);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-border-light: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --glass-blur: 28px;
+  --glass-blur-heavy: 48px;
+
+  /* Premium Accent Colors */
+  --accent-primary: #6366F1;
+  /* Indigo */
+  --accent-secondary: #EC4899;
+  /* Pink */
+  --accent-tertiary: #14B8A6;
+  /* Teal */
+  --accent-warm: #F97316;
+  /* Orange */
+
+  /* iOS 26 System Colors - Enhanced Vibrancy */
+  --ios-blue: #3B82F6;
+  --ios-green: #22C55E;
+  --ios-red: #EF4444;
+  --ios-orange: #F97316;
+  --ios-purple: #A855F7;
+  --ios-cyan: #06B6D4;
+  --ios-pink: #EC4899;
+  --ios-indigo: #6366F1;
+  --ios-teal: #14B8A6;
+  --ios-amber: #F59E0B;
+
+  /* Gradient System */
+  --gradient-primary: linear-gradient(135deg, #6366F1 0%, #A855F7 100%);
+  --gradient-success: linear-gradient(135deg, #22C55E 0%, #14B8A6 100%);
+  --gradient-danger: linear-gradient(135deg, #EF4444 0%, #EC4899 100%);
+  --gradient-warm: linear-gradient(135deg, #F97316 0%, #F59E0B 100%);
+
+  /* Spring Animation */
+  --spring-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --spring-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --liquid-flow: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Light Mode Background - Soft Pastel Gradient */
+  --bg-gradient: linear-gradient(145deg,
+      #E0E7FF 0%,
+      /* Indigo tint */
+      #FCE7F3 25%,
+      /* Pink tint */
+      #ECFDF5 50%,
+      /* Mint tint */
+      #FEF3C7 75%,
+      /* Amber tint */
+      #F0FDFA 100%
+      /* Teal tint */
+    );
+
+  /* Text Colors */
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+}
+
+/* Dark Mode Variables - Rich, Vibrant Night Theme */
+.dark {
+  --glass-bg: rgba(15, 15, 20, 0.82);
+  --glass-bg-light: rgba(25, 25, 35, 0.92);
+  --glass-bg-subtle: rgba(20, 20, 28, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-light: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --glass-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6), 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* Dark Mode Accent Colors - Neon Glow */
+  --accent-primary: #818CF8;
+  /* Brighter Indigo */
+  --accent-secondary: #F472B6;
+  /* Brighter Pink */
+  --accent-tertiary: #2DD4BF;
+  /* Brighter Teal */
+  --accent-warm: #FB923C;
+  /* Brighter Orange */
+
+  /* Dark Mode Background - Deep Space Gradient */
+  --bg-gradient: linear-gradient(145deg,
+      #0F0F1F 0%,
+      /* Deep indigo */
+      #1A0F24 25%,
+      /* Deep purple */
+      #0F1A1F 50%,
+      /* Deep teal */
+      #1A1410 75%,
+      /* Deep amber */
+      #0F1A18 100%
+      /* Deep cyan */
+    );
+
+  /* Text Colors */
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --text-muted: #6B7280;
+}
+
+/* ================================================
+   BASE STYLES
+   ================================================ */
+
+body {
+  font-family: 'Kanit', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  transition: background 0.5s var(--liquid-flow);
+  min-height: 100vh;
+}
+
+.dark body {
+  background: var(--bg-gradient);
+  color: #F3F4F6;
+}
+
+/* ================================================
+   GLASSMORPHISM UTILITIES
+   ================================================ */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-heavy {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid var(--glass-border-light);
+  box-shadow: var(--glass-shadow-lg);
+}
+
+.glass-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Glass Card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s var(--spring-smooth);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    var(--glass-shadow-lg),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Glass Button */
+.glass-btn {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s var(--spring-bounce);
+}
+
+.glass-btn:hover {
+  background: var(--glass-bg);
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.glass-btn:active {
+  transform: scale(0.96);
+}
+
+/* Glass Modal Overlay */
+.glass-modal-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Glass Modal Panel */
+.glass-modal {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid var(--glass-border-light);
+  border-radius: 32px;
+  box-shadow:
+    var(--glass-shadow-lg),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Glass Input */
+.glass-input {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  transition: all 0.3s var(--spring-smooth);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+}
+
+.dark .glass-input {
+  background: rgba(60, 60, 70, 0.5);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+/* ================================================
+   DYNAMIC ISLAND
+   ================================================ */
+
+.dynamic-island {
+  background: linear-gradient(180deg, rgba(20, 20, 25, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    0 0 0 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.island-transition {
+  transition: all 0.5s var(--spring-bounce);
+}
+
+.island-idle {
+  width: 126px;
+  height: 36px;
+  border-radius: 99px;
+}
+
+.island-tracking {
+  width: 240px;
+  height: 40px;
+  border-radius: 99px;
+}
+
+.island-active {
+  width: 320px;
+  height: 72px;
+  border-radius: 36px;
+}
+
+.island-large {
+  width: 350px;
+  height: 200px;
+  border-radius: 44px;
+}
+
+/* ================================================
+   HEADER
+   ================================================ */
+
+.header-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* ================================================
+   FAB
+   ================================================ */
+
+.fab-glass {
+  background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.4),
+    0 4px 12px rgba(168, 85, 247, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.4s var(--spring-bounce);
+}
+
+.fab-glass:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 12px 40px rgba(99, 102, 241, 0.5),
+    0 6px 16px rgba(168, 85, 247, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.fab-glass:active {
+  transform: scale(0.92);
+}
+
+/* ================================================
+   ANIMATIONS
+   ================================================ */
+
+@keyframes wave {
+
+  0%,
+  100% {
+    height: 4px;
+    opacity: 0.5;
+  }
+
+  50% {
+    height: 16px;
+    opacity: 1;
+  }
+}
+
+.wave-bar {
+  width: 3px;
+  background: linear-gradient(180deg, #34D399 0%, #10B981 100%);
+  border-radius: 99px;
+  animation: wave 1s ease-in-out infinite;
+}
+
+.wave-paused {
+  animation: none;
+  height: 4px;
+  opacity: 0.3;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.wave-bar:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.wave-bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.wave-bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.wave-bar:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop {
+  animation: pop 0.4s var(--spring-bounce);
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(52, 199, 89, 0.6);
+  }
+}
+
+.animate-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Distance Animation */
+@keyframes numberChange {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-4px) scale(1.1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.distance-value {
+  display: inline-block;
+  transition: all 0.3s var(--liquid-flow);
+  font-variant-numeric: tabular-nums;
+}
+
+.distance-updating {
+  animation: numberChange 0.5s var(--spring-bounce);
+}
+
+.distance-nearby {
+  color: #34D399 !important;
+  font-weight: 700;
+}
+
+/* ================================================
+   SCROLLBAR & UTILITIES
+   ================================================ */
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.safe-top {
+  top: calc(0.5rem + env(safe-area-inset-top));
+}
+
+.safe-bottom {
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+/* ================================================
+   MOBILE RESPONSIVENESS
+   ================================================ */
+
+@media (max-width: 640px) {
+  .island-idle {
+    width: 120px;
+    height: 34px;
+  }
+
+  .island-tracking {
+    width: 200px;
+    height: 38px;
+  }
+
+  .island-active {
+    width: 280px;
+    height: 68px;
+  }
+
+  .island-large {
+    width: 320px;
+    height: 180px;
+  }
+}
