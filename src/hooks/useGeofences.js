@@ -1,14 +1,20 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import * as api from '../services/api';
 import { getDistanceInMeters } from '../utils/distance';
 
 /**
  * Custom hook for geofence management
+ * @param {Object} position - Current GPS position
+ * @param {string} notifyMode - Notification mode (family/private)
+ * @param {Function} onGeofenceEvent - Callback for enter/exit events: (type, geofence) => void
  */
-export function useGeofences(position, notifyMode) {
+export function useGeofences(position, notifyMode, onGeofenceEvent) {
     const [geofences, setGeofences] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // Track previous isInside state for each geofence to detect enter/exit
+    const prevInsideStatesRef = useRef({});
 
     // Fetch initial data
     const fetchData = useCallback(async () => {
@@ -27,17 +33,23 @@ export function useGeofences(position, notifyMode) {
 
     // Update location and recalculate distances
     const updateLocation = useCallback(async () => {
-        if (!position.lat || !position.lng) return;
+        if (!position.lat || !position.lng) return { success: false };
 
         try {
             const data = await api.updateLocation(position.lat, position.lng, notifyMode);
             if (data?.geofences) {
                 setGeofences(data.geofences);
             }
+            return { success: true, data };
         } catch (err) {
             console.error('Failed to update location:', err);
+            // Call error callback if provided
+            if (onGeofenceEvent) {
+                onGeofenceEvent('error', { message: 'ส่งข้อมูลล้มเหลว' });
+            }
+            return { success: false, error: err };
         }
-    }, [position.lat, position.lng, notifyMode]);
+    }, [position.lat, position.lng, notifyMode, onGeofenceEvent]);
 
     // Add geofence
     const addGeofence = useCallback(async (geofence) => {
@@ -112,22 +124,46 @@ export function useGeofences(position, notifyMode) {
         }
     }, [position.lat, position.lng]);
 
-    // Calculate distances locally
+    // Calculate distances locally and detect enter/exit events
     const recalculateDistances = useCallback(() => {
         if (!position.lat || !position.lng) return;
 
-        setGeofences((prev) =>
-            prev.map((g) => {
+        setGeofences((prev) => {
+            const updated = prev.map((g) => {
                 if (!g.lat || !g.lng) return g;
                 const dist = getDistanceInMeters(position.lat, position.lng, g.lat, g.lng);
+                const isInside = dist <= g.radius;
+
+                // Only check enabled geofences for enter/exit events
+                if (g.enabled && onGeofenceEvent) {
+                    const prevIsInside = prevInsideStatesRef.current[g.id];
+
+                    // Detect ENTER event (was outside, now inside)
+                    if (prevIsInside === false && isInside === true) {
+                        if (g.notifyEnter !== false) {
+                            onGeofenceEvent('enter', g);
+                        }
+                    }
+                    // Detect EXIT event (was inside, now outside)
+                    else if (prevIsInside === true && isInside === false) {
+                        if (g.notifyExit !== false) {
+                            onGeofenceEvent('exit', g);
+                        }
+                    }
+
+                    // Update previous state
+                    prevInsideStatesRef.current[g.id] = isInside;
+                }
+
                 return {
                     ...g,
                     currentDistance: Math.round(dist),
-                    isInside: dist <= g.radius,
+                    isInside,
                 };
-            })
-        );
-    }, [position.lat, position.lng]);
+            });
+            return updated;
+        });
+    }, [position.lat, position.lng, onGeofenceEvent]);
 
     // Get nearest enabled geofence
     const getNearestGeofence = useCallback(() => {

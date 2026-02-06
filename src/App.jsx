@@ -26,6 +26,45 @@ import * as api from './services/api';
 import { playSound } from './utils/audio';
 
 function App() {
+  // Dynamic Island hook (must be before useGeofences to use showNotification in callback)
+  const {
+    state: islandState,
+    content: islandContent,
+    showNotification,
+    showTracking,
+    toggleExpand,
+    collapse
+  } = useDynamicIsland();
+
+  // Geofence event handler - shows notification on DynamicIsland
+  const handleGeofenceEvent = useCallback((type, geofence) => {
+    if (type === 'enter') {
+      showNotification(
+        '📍 เข้าพื้นที่',
+        `${geofence.name} • ส่ง LINE แล้ว ✓`,
+        'success',
+        4000
+      );
+      playSound('success');
+    } else if (type === 'exit') {
+      showNotification(
+        '🚗 ออกจากพื้นที่',
+        `${geofence.name} • ส่ง LINE แล้ว ✓`,
+        'info',
+        4000
+      );
+      playSound('info');
+    } else if (type === 'error') {
+      showNotification(
+        '❌ เชื่อมต่อล้มเหลว',
+        geofence.message || 'ไม่สามารถส่งข้อมูลได้',
+        'error',
+        5000
+      );
+      playSound('error');
+    }
+  }, [showNotification]);
+
   // Hooks
   const { position, speed, status: gpsStatus } = useGeolocation();
   const { darkMode, notifyMode, toggleDarkMode, toggleNotifyMode } = useSettings();
@@ -38,15 +77,7 @@ function App() {
     toggleGeofence,
     getNearestGeofence,
     updateLocation,
-  } = useGeofences(position, notifyMode);
-  const {
-    state: islandState,
-    content: islandContent,
-    showNotification,
-    showTracking,
-    toggleExpand,
-    collapse
-  } = useDynamicIsland();
+  } = useGeofences(position, notifyMode, handleGeofenceEvent);
 
   // Local state
   const [showAddModal, setShowAddModal] = useState(false);
