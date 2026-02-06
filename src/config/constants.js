@@ -3,25 +3,22 @@
 // ==========================================
 
 // API URL - Google Apps Script Backend
-// Set this in your .env file: VITE_API_URL=your_google_apps_script_url
-export const API_URL = import.meta.env.VITE_API_URL || '';
+export const API_URL = 'https://script.google.com/macros/s/AKfycbxlT1K95OszhfcJ_DSw4Cdxr5Xmf771mC2uyvijuF_ursqveoPwjRnQieHhiO3OR9nf/exec';
 
 // Contact List สำหรับระบบแชท
-// Configure these IDs in your local environment
 export const CONTACTS = [
-    { id: import.meta.env.VITE_CONTACT_1_ID || '', name: '😺 Contact 1' },
-    { id: import.meta.env.VITE_CONTACT_2_ID || '', name: '👩 Contact 2' },
-    { id: import.meta.env.VITE_CONTACT_3_ID || '', name: '👨 Contact 3' },
-    { id: import.meta.env.VITE_CONTACT_4_ID || '', name: '🐷 Contact 4' }
+    { id: 'U040b0e7749d305a3767ca81393d9a4b6', name: '😺 แมวเด้ง' },
+    { id: 'Uf3c9d54871b5639c76bda2acb10b907c', name: '👩 แม่' },
+    { id: 'Ud10ccc6c969d5409b5c17362158b8abc', name: '👨 พ่อ' },
+    { id: 'U8a1cd2d64381ad5eb0239d180337b313', name: '🐷 ตัวเอง' }
 ];
 
 // User IDs สำหรับ notify mode
-// Set these in your .env file
-export const USER_ID = import.meta.env.VITE_USER_ID || ''; // Private mode
+export const USER_ID = 'U040b0e7749d305a3767ca81393d9a4b6'; // Private mode
 export const FAMILY_IDS = [
-    import.meta.env.VITE_FAMILY_ID_1 || '',
-    import.meta.env.VITE_FAMILY_ID_2 || '',
-    import.meta.env.VITE_FAMILY_ID_3 || '',
+    'U8a1cd2d64381ad5eb0239d180337b313', // UID ของคุณ
+    'Uf3c9d54871b5639c76bda2acb10b907c', // UID แม่
+    'Ud10ccc6c969d5409b5c17362158b8abc', // UID พ่อ
 ];
 
 // GPS Settings

@@ -86,12 +86,16 @@ function App() {
     }
   }, [position.lat, position.lng, gpsStatus]);
 
-  // Periodically update location to backend
+  // Update location to backend when position changes and periodically
   useEffect(() => {
     if (position.lat && position.lng) {
+      // Send location immediately when position changes
+      updateLocation();
+
+      // Also send periodically every 5 seconds
       const interval = setInterval(() => {
         updateLocation();
-      }, 10000); // Every 10 seconds
+      }, 5000); // Every 5 seconds
 
       return () => clearInterval(interval);
     }
