@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './index.css';
+import pkg from '../package.json';
+
 
 // Hooks
 import { useGeolocation } from './hooks/useGeolocation';
@@ -305,6 +307,11 @@ function App() {
           onDelete={handleOpenDeleteModal}
           onToggle={handleToggleGeofence}
         />
+
+        {/* Version Display */}
+        <div className="text-center py-6 text-xs text-gray-300 dark:text-gray-700 font-mono opacity-50 select-none">
+          v{pkg.version}
+        </div>
       </div>
 
       {/* FAB */}
