@@ -21,6 +21,7 @@ import { SOSModal } from './components/Modals/SOSModal';
 import { CheckInModal } from './components/Modals/CheckInModal';
 import { SystemInfoModal } from './components/Modals/SystemInfoModal';
 import { TestModal } from './components/Modals/TestModal';
+import { MapModal } from './components/Modals/MapModal';
 import { PocketModeOverlay } from './components/PocketMode/PocketModeOverlay';
 
 // Services
@@ -90,6 +91,8 @@ function App() {
   const [showSystemInfoModal, setShowSystemInfoModal] = useState(false);
   const [showTestModal, setShowTestModal] = useState(false);
   const [showPocketMode, setShowPocketMode] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [mapDestination, setMapDestination] = useState(null);
   const [editingGeofence, setEditingGeofence] = useState(null);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
   const [lastUpdate, setLastUpdate] = useState('Connecting...');
@@ -294,6 +297,21 @@ function App() {
     showNotification('Pocket Mode', '👁️ เปิดโหมดกระเป๋า', 'info');
   }, [showNotification]);
 
+  // Handle Map Navigation
+  const handleOpenMap = useCallback((geofence) => {
+    setMapDestination({
+      lat: geofence.lat,
+      lng: geofence.lng,
+      name: geofence.name
+    });
+    setShowMapModal(true);
+  }, []);
+
+  const handleCloseMap = useCallback(() => {
+    setShowMapModal(false);
+    setMapDestination(null);
+  }, []);
+
   return (
     <div className={`pb-32 min-h-screen transition-colors duration-500 ${darkMode ? 'dark' : ''}`}>
       {/* Dynamic Island */}
@@ -330,6 +348,8 @@ function App() {
           onEdit={handleOpenEditModal}
           onDelete={handleOpenDeleteModal}
           onToggle={handleToggleGeofence}
+          currentPosition={position}
+          onNavigate={handleOpenMap}
         />
 
         {/* Version Display */}
@@ -400,6 +420,13 @@ function App() {
         position={position}
         speed={speed}
         nearestGeofence={nearestGeofence}
+      />
+
+      <MapModal
+        isOpen={showMapModal}
+        onClose={handleCloseMap}
+        origin={position}
+        destination={mapDestination}
       />
     </div>
   );

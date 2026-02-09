@@ -3,7 +3,7 @@ import GeofenceCard from './GeofenceCard';
 /**
  * Geofence List Component
  */
-export function GeofenceList({ geofences, onEdit, onDelete, onToggle, loading, currentPosition }) {
+export function GeofenceList({ geofences, onEdit, onDelete, onToggle, loading, currentPosition, onNavigate }) {
     if (loading) {
         return (
             <div className="text-center py-20 text-gray-400">
@@ -40,6 +40,7 @@ export function GeofenceList({ geofences, onEdit, onDelete, onToggle, loading, c
                     onDelete={onDelete}
                     onToggle={onToggle}
                     currentPosition={currentPosition}
+                    onNavigate={onNavigate}
                 />
             ))}
         </div>

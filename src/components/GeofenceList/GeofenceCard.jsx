@@ -3,7 +3,7 @@ import { formatDistance } from '../../utils/distance';
 /**
  * Geofence Card Component
  */
-export function GeofenceCard({ geofence, onEdit, onDelete, onToggle, currentPosition }) {
+export function GeofenceCard({ geofence, onEdit, onDelete, onToggle, currentPosition, onNavigate }) {
     const {
         id,
         name,
