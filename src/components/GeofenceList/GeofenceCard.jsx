@@ -7,6 +7,8 @@ export function GeofenceCard({ geofence, onEdit, onDelete, onToggle, currentPosi
     const {
         id,
         name,
+        lat,
+        lng,
         radius,
         enabled,
         currentDistance,
