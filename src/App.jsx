@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import './index.css';
 import pkg from '../package.json';
 
@@ -119,18 +119,42 @@ function App() {
     }
   }, [position.lat, position.lng, gpsStatus]);
 
-  // Update location to backend when position changes and periodically
+  // [FIX] Debounce logic to prevent duplicate API calls
+  const lastUpdateTimeRef = useRef(0);
+  const updateIntervalRef = useRef(null);
+
+  // Update location to backend with debounce protection
   useEffect(() => {
     if (position.lat && position.lng) {
-      // Send location immediately when position changes
-      updateLocation();
+      const now = Date.now();
+      const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
+      const minInterval = 4000; // Minimum 4 seconds between updates
 
-      // Also send periodically every 5 seconds
-      const interval = setInterval(() => {
+      // Send immediately if enough time has passed
+      if (timeSinceLastUpdate >= minInterval) {
         updateLocation();
+        lastUpdateTimeRef.current = now;
+      }
+
+      // Clear existing interval
+      if (updateIntervalRef.current) {
+        clearInterval(updateIntervalRef.current);
+      }
+
+      // Set up periodic updates every 5 seconds
+      updateIntervalRef.current = setInterval(() => {
+        const currentTime = Date.now();
+        if (currentTime - lastUpdateTimeRef.current >= minInterval) {
+          updateLocation();
+          lastUpdateTimeRef.current = currentTime;
+        }
       }, 5000); // Every 5 seconds
 
-      return () => clearInterval(interval);
+      return () => {
+        if (updateIntervalRef.current) {
+          clearInterval(updateIntervalRef.current);
+        }
+      };
     }
   }, [position.lat, position.lng, updateLocation]);
 
