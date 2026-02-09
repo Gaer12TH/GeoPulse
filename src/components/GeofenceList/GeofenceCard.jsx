@@ -3,7 +3,7 @@ import { formatDistance } from '../../utils/distance';
 /**
  * Geofence Card Component
  */
-export function GeofenceCard({ geofence, onEdit, onDelete, onToggle }) {
+export function GeofenceCard({ geofence, onEdit, onDelete, onToggle, currentPosition }) {
     const {
         id,
         name,
@@ -28,6 +28,23 @@ export function GeofenceCard({ geofence, onEdit, onDelete, onToggle }) {
         : 'bg-gray-300 dark:bg-gray-600';
 
     const opacity = enabled ? 'opacity-100' : 'opacity-50 grayscale-[0.6]';
+
+    // Handle navigation to Google Maps
+    const handleNavigate = () => {
+        if (!currentPosition?.lat || !currentPosition?.lng) {
+            alert('⚠️ รอสักครู่ กำลังรับสัญญาณ GPS...');
+            return;
+        }
+
+        const { lat: destLat, lng: destLng } = geofence;
+        const { lat: originLat, lng: originLng } = currentPosition;
+
+        // Google Maps directions URL
+        const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destLat},${destLng}&travelmode=driving`;
+
+        // Open in new tab/window
+        window.open(mapsUrl, '_blank');
+    };
 
     return (
         <div className={`glass-card p-5 transition-all duration-300 ${cardStyle} ${opacity} mb-4 relative overflow-hidden group`}>
@@ -90,6 +107,17 @@ export function GeofenceCard({ geofence, onEdit, onDelete, onToggle }) {
                 </div>
 
                 <div className="flex gap-2">
+                    {/* Navigate Button */}
+                    <button
+                        onClick={handleNavigate}
+                        disabled={!currentPosition?.lat || !currentPosition?.lng}
+                        className="p-2.5 text-gray-400 hover:text-emerald-500 hover:bg-gradient-to-br hover:from-emerald-50 hover:to-teal-50 rounded-xl transition-all border border-transparent hover:border-emerald-200/60 active:scale-95 shadow-sm hover:shadow-md disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gray-400 disabled:hover:bg-transparent dark:hover:from-emerald-900/30 dark:hover:to-teal-900/20 dark:hover:border-emerald-700/40"
+                        title="นำทางด้วย Google Maps"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                        </svg>
+                    </button>
                     <button
                         onClick={() => onEdit(id)}
                         className="p-2.5 text-gray-400 hover:text-blue-500 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 rounded-xl transition-all border border-transparent hover:border-blue-200/60 active:scale-95 shadow-sm hover:shadow-md dark:hover:from-blue-900/30 dark:hover:to-indigo-900/20 dark:hover:border-blue-700/40"
